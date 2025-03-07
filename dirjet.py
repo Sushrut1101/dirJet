@@ -4,6 +4,9 @@ import os
 import pickle
 from pathlib import Path
 import argparse
+from colorama import init, Fore, Style
+
+init(autoreset=True)
 
 DB_PATH = Path.home() / ".dirjet_db"
 
@@ -25,14 +28,16 @@ def add_path(path, db):
     else:
         db[path] = 1
     save_db(db)
+    print(f"{Fore.GREEN}Directory bookmarked successfully: {path}")
 
 def jump_to_directory(query, db):
     query = query.lower()
     for path in sorted(db, key=db.get, reverse=True):
         if query in path.lower():
-            print(f"Jumping to {path}")
+            print(f"{Fore.CYAN}Jumping to {path}")
             os.chdir(path)
-            break
+            return
+    print(f"{Fore.RED}No matching directory found for query: {query}")
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Navigate directories efficiently.")
@@ -48,8 +53,9 @@ def main():
     if args.bookmark:
         add_path(os.getcwd(), db)
     elif args.list:
+        print(f"{Fore.YELLOW}Bookmarked directories:")
         for path in db:
-            print(path)
+            print(f"{Fore.YELLOW}{path}")
     else:
         jump_to_directory(args.query, db)
 

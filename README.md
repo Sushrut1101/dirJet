@@ -20,7 +20,12 @@
    cd dirjet
    ```
 
-2. Make the script executable:
+2. Install the dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. Make the script executable:
    ```bash
    chmod +x dirjet.py
    ```
